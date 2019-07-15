@@ -9,6 +9,7 @@ import org.ajou.realcoding.lolcrawler.lolcrawler.repository.CurrentSummonerStatR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Set;
 
 @Slf4j
@@ -26,4 +27,14 @@ public class SummonerStatService {
         return  riotDeveloperPortalApiClient.requestEncryptedSummonerId(summonerName);
     }
 
+    public Set<CurrentSummonerStat> getCurrentSummonerStat(EncryptedSummonerId encryptedSummonerId) {
+
+        Set<CurrentSummonerStat> currentSummonerStat = riotDeveloperPortalApiClient.requestCurrentSummonerStat(encryptedSummonerId);
+
+        currentSummonerStatRepository.insertOrUpdateCurrentSummonerStat(currentSummonerStat);
+
+        log.info("Current summoner stat has been inserted successfully. {}", currentSummonerStat);
+
+        return currentSummonerStat;
+    }
 }
